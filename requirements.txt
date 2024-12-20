@@ -1,9 +1,12 @@
 unstructured 
 tiktoken
-pinecone-client
 pypdf
 openai
-langchain-openai
 pandas
 numpy
 python-dotenv
+pinecone-client
+langchain-openai
+langchain-pinecone
+pinecone-notebooks
+langchain-core
