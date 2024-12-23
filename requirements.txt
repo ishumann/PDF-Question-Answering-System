@@ -1,8 +1,7 @@
 unstructured 
 tiktoken
-pypdf
+pyPDF2
 openai
-pandas
 numpy
 python-dotenv
 pinecone-client
@@ -10,3 +9,7 @@ langchain-openai
 langchain-pinecone
 pinecone-notebooks
 langchain-core
+chromadb
+google-generativeai
+langchain_google_genai
+faiss-cpu
