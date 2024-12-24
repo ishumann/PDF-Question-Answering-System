@@ -1,8 +1,6 @@
 import streamlit as st
 import google.generativeai as genai
 import os
-from dotenv import load_dotenv
-
 from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
@@ -11,9 +9,12 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 
 
-load_dotenv()
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+from dotenv import load_dotenv
 
+load_dotenv()
+
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+# my_var = os.environ.get("MY_ENV_VAR")
 
 # get the text  from each page of pdf/pdfs
 
@@ -34,7 +35,8 @@ def get_text_chunks(text):
 
 
 def get_vector_store(text_chunks):
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-004")
+    
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     vector_store = FAISS.from_texts(text_chunks, embedding= embeddings)
     vector_store.save_local("faiss_index")
 
@@ -51,7 +53,7 @@ def get_conversational_chain():
     
     """
 
-    model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", temperature=0.5,)
+    model = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.5,)
 
     prompt =  PromptTemplate(template=prompt_template, input_variables=["context", "question"])
     
@@ -60,8 +62,8 @@ def get_conversational_chain():
 
 
 def user_input(user_question):
-    embedding = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
-    new_db = FAISS.load_local("faiss_index", embedding=embedding)
+    embedding = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    new_db = FAISS.load_local("faiss_index", embeddings=embedding, allow_dangerous_deserialization=True)
 
     docs = new_db.similarity_search(user_question)
 
